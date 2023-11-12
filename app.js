@@ -22,6 +22,22 @@ app.use((req, res, next) => {
     next();
 });
 
+// Simulated error middleware
+app.use((req, res, next) => {
+    const err = new Error('This is a simulated error.');
+    err.status = 500; // Set a custom status code for the error
+    next(err); // Pass the error to the next middleware
+  });
+  
+  // Error-handling middleware
+  app.use((err, req, res, next) => {
+    // Log the error message without exposing it in the response
+    console.error('Internal Server Error:', err.message);
+  
+    // Continue with the next middleware without sending a response
+    next();
+  });
+
 // API Routes
 app.use('/api/books', booksRouter);
 app.use('/api/publishers', publishersRouter);
