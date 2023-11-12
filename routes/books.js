@@ -1,3 +1,5 @@
+// routes/books.js
+
 const express = require('express');
 const router = express.Router();
 
@@ -6,53 +8,32 @@ let books = [
     { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee' }
 ];
 
-
-
-app.get('/books', (req, res) => {
-    // Render the 'books' view and pass the 'books' data to it.
+// Endpoint for getting all books
+router.get('/', (req, res) => {
     res.render('books', { books });
 });
 
-// Define a route to handle GET requests for retrieving a specific book by its ID.
-app.get('/books/:id', (req, res) => {
+// Endpoint for adding a new book
+router.post('/', (req, res) => {
+    const newBook = req.body;
+    newBook.id = books.length + 1;
+    books.push(newBook);
+    res.status(201).json({ book: newBook });
+});
+
+// Endpoint for updating a book by ID
+router.put('/:id', (req, res) => {
     const bookId = parseInt(req.params.id);
-    const book = books.find(book => book.id === bookId);
-
-    if (book) {
-        // Render the 'book' view and pass the 'book' data to it.
-        res.render('book', { book });
-    } else {
-        res.status(404).json({ message: 'Book not found' });
-    }
-});
-
-// Define a route to handle POST requests for adding a new book.
-app.post('/books', (req, res) => {
-    const newBook = req.body; // Extract the new book data from the request body.
-    newBook.id = books.length + 1; // Assign a new ID to the new book.
-    books.push(newBook); // Add the new book to the array of books.
-
-    res.status(201).json({ book: newBook }); // Respond with the new book in JSON format and a 201 status (Created).
-});
-
-// Define a route to handle PUT requests for updating a book by its ID.
-app.put('/books/:id', (req, res) => {
-    const bookId = parseInt(req.params.id); // Extract the book ID from the request parameters.
-    const updatedBook = req.body; // Extract the updated book data from the request body.
-
-    // Update the array of books by mapping over it and replacing the book with the specified ID.
+    const updatedBook = req.body;
     books = books.map(book => (book.id === bookId ? { ...book, ...updatedBook } : book));
-
-    res.json({ books }); // Respond with the updated array of books in JSON format.
+    res.json({ books });
 });
 
-// Define a route to handle DELETE requests for deleting a book by its ID.
-app.delete('/books/:id', (req, res) => {
-    const bookId = parseInt(req.params.id); // Extract the book ID from the request parameters.
-    books = books.filter(book => book.id !== bookId); // Filter out the book with the specified ID.
-
-    res.json({ books }); // Respond with the updated array of books in JSON format.
+// Endpoint for deleting a book by ID
+router.delete('/:id', (req, res) => {
+    const bookId = parseInt(req.params.id);
+    books = books.filter(book => book.id !== bookId);
+    res.json({ books });
 });
-
 
 module.exports = router;

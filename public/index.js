@@ -9,7 +9,7 @@ document.getElementById('bookForm').addEventListener('submit', function (event) 
     const newBook = { title, author };
 
     // Make a POST request to the API
-    fetch('http://localhost:3000/books', {
+    fetch('http://localhost:3000/api/books', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
