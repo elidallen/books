@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // Define a route to handle GET requests for retrieving reviews for a specific book by ID.
-router.get('/:bookId', (req, res) => {
+router.get('/:id', (req, res) => {
     const bookId = parseInt(req.params.bookId);
     const bookReviews = reviews.filter(review => review.bookId === bookId);
 
