@@ -1,1 +1,1 @@
-This Node.js and Express API allows you to manage a collection of books. You can perform CRUD (Create, Read, Update, Delete) operations on the book data.
+This Node.js and Express API allows you to manage a collection of books. 
